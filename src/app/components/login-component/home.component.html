@@ -1,0 +1,131 @@
+<div *ngIf="types.length == 0">
+  Loading data
+</div>
+<mat-tab-group>
+
+  <mat-tab label="Search by specifications">
+    <div>
+      <div style="display: inline-block">
+        <mat-form-field>
+          <mat-select [formControl]="typeCtrl" [(ngModel)]="selectedType" placeholder="Type name" #singleSelectType >
+            <mat-option>
+              <ngx-mat-select-search [formControl]="typeFilterCtrl"></ngx-mat-select-search>
+            </mat-option>
+
+            <mat-option *ngFor="let type of filteredTypes | async" [value]="type">
+              {{type.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select [formControl]="breedMultiCtrl" placeholder="Breeds" [(ngModel)]="selectedBreeds" [multiple]="true" #multiSelectBreed>
+            <mat-option>
+              <ngx-mat-select-search [formControl]="breedMultiFilterCtrl"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let breed of filteredBreedsMulti | async" [value]="breed">
+              {{breed}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select [formControl]="colorMultiCtrl" placeholder="Colors" [(ngModel)]="selectedColors" [multiple]="true" #multiSelectColor>
+            <mat-option>
+              <ngx-mat-select-search [formControl]="colorMultiFilterCtrl"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let color of filteredColorsMulti | async" [value]="color">
+              {{color}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select [formControl]="coatMultiCtrl" placeholder="Coats" [(ngModel)]="selectedColors" [multiple]="true" #multiSelectCoat>
+            <mat-option>
+              <ngx-mat-select-search [formControl]="coatMultiFilterCtrl"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let coat of filteredCoatsMulti | async" [value]="coat">
+              {{coat}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select [formControl]="genderMultiCtrl" placeholder="Genders" [(ngModel)]="selectedGenders" [multiple]="true" #multiSelectGender>
+            <mat-option>
+              <ngx-mat-select-search [formControl]="genderMultiFilterCtrl"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let gender of filteredGendersMulti | async" [value]="gender">
+              {{gender}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+      <div style="display: inline-block">
+        <mat-form-field>
+          <mat-select [formControl]="statusMultiCtrl" placeholder="Statuses" [(ngModel)]="selectedStatuses" [multiple]="true" #multiSelectStatus>
+            <mat-option>
+              <ngx-mat-select-search [formControl]="statusMultiFilterCtrl"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let status of filteredStatusesMulti | async" [value]="status">
+              {{status}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Location</mat-label>
+          <input matInput placeholder="city, state; latitude,longitude; or postal code." [(ngModel)]="location">
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Search by location">
+    <mat-form-field>
+      <mat-select [formControl]="orgMultiCtrl" placeholder="Organizations" [(ngModel)]="selectedOrgs" [multiple]="true" #multiSelectOrg>
+        <mat-option>
+          <ngx-mat-select-search [formControl]="orgMultiFilterCtrl"></ngx-mat-select-search>
+        </mat-option>
+        <mat-option *ngFor="let org of filteredOrgsMulti | async" [value]="org">
+          {{org.name}} - {{org.orgId}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Location</mat-label>
+      <input matInput placeholder="city, state; latitude,longitude; or postal code." [(ngModel)]="location">
+    </mat-form-field>
+  </mat-tab>
+</mat-tab-group>
+
+<div>
+  <button mat-raised-button color="primary" (click)="search()">Search</button>
+  <button mat-raised-button color="accent" [disabled]="!saveResult">Save the results</button>
+</div>
+
+<div *ngIf="error">
+  <span style="color: red">{{error}}</span>
+</div>
+
+
+<div style="display: block">
+<div style="display: inline-block" *ngFor="let animal of animals">
+  <mat-card class="example-card">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>{{animal.name}}</mat-card-title>
+          <mat-card-subtitle>{{animal.breed}}</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="{{animal.photos[0]}}" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+            <span>Organization: <b>{{animal.organization}}</b></span>
+            {{animal.description}}
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>LIKE</button>
+          <a mat-stroked-button href="{{animal.url}}" target="_blank">GO TO SEE</a>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+</div>
+
+
